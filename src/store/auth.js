@@ -1,26 +1,21 @@
-import axios from "axios";
-
-axios.defaults.baseURL = "";
-// if there’s already a token in storage, set it on axios
-const saved = localStorage.getItem("access_token");
-if (saved) {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${saved}`;
-}
+import axios from 'axios'
 
 export const auth = {
-  accessToken: saved || null,
+  accessToken: null,
 
-  async login(u, p) {
-    const { data } = await axios.post("/api/auth/login", { username: u, password: p });
-    this.accessToken = data.access_token;
-    // persist it
-    localStorage.setItem("access_token", this.accessToken);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${this.accessToken}`;
+  async login(username, password) {
+    const { data } = await axios.post('/api/auth/login', { username, password })
+    this.accessToken = data.access_token
+    localStorage.setItem('access_token', data.access_token)
   },
 
   logout() {
-    this.accessToken = null;
-    localStorage.removeItem("access_token");
-    delete axios.defaults.headers.common["Authorization"];
+    this.accessToken = null
+    localStorage.removeItem('access_token')
   }
-};
+}
+
+const saved = localStorage.getItem('access_token')
+if (saved) {
+  auth.accessToken = saved
+}
