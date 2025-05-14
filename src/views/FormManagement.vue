@@ -1,6 +1,13 @@
 <template>
   <div class="p-6">
     <h2 class="text-2xl font-bold">Available Forms</h2>
+    <button
+      @click="$router.push('/forms/create')"
+      class="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+      v-if="isAdmin"
+    >
+      + New Form
+    </button>
     <table class="min-w-full bg-white border">
       <thead class="bg-gray-100">
         <tr>

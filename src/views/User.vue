@@ -1,6 +1,6 @@
 <template>
   <div class="p-6 max-w-md mx-auto">
-    <h1 class="text-2xl font-bold mb-4">User Profile</h1>
+    <h2 class="text-2xl font-bold mb-4">User Profile</h2>
     <div v-if="user">
       <div v-if="canEdit" class="mt-4 flex space-x-2">
         <button

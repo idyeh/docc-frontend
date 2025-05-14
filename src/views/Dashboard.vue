@@ -13,25 +13,7 @@
       </button>
     </div>
 
-    <div v-if="isAdmin" class="mt-8">
-      <h2 class="text-lg font-semibold">System Users</h2>
-      <table class="min-w-full bg-white border">
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-4 py-2 border">ID</th>
-            <th class="px-4 py-2 border">Username</th>
-            <th class="px-4 py-2 border">Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.id" class="hover:bg-gray-50">
-            <td class="px-4 py-2 border">{{ user.id }}</td>
-            <td class="px-4 py-2 border">{{ user.username }}</td>
-            <td class="px-4 py-2 border">{{ user.roles?.join('/') }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <UserManagement v-if="isAdmin" />
     
     <FormManagement />
   </div>
@@ -41,11 +23,12 @@
 import axios from "axios";
 import { auth } from "../store/auth";
 import FormManagement from "./FormManagement.vue";
+import UserManagement from "./UserManagement.vue";
 import jwtDecode from '../utils/jwtDecode'
 
 export default {
   name: "Dashboard",
-  components: { FormManagement },
+  components: { FormManagement, UserManagement },
   data() {
     return {
       forms: [],

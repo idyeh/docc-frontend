@@ -1,8 +1,8 @@
 <template>
   <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">
+    <h2 class="text-2xl font-bold mb-4">
       {{ isEdit ? 'Edit Form' : 'Create New Form' }}
-    </h1>
+    </h2>
 
     <form @submit.prevent="saveForm">
       <!-- Form Name & Description -->

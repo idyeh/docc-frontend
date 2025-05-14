@@ -1,6 +1,6 @@
 <template>
   <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">User Management</h1>
+    <h2 class="text-2xl font-bold mb-4">User Management</h2>
     <button
       @click="$router.push('/users/create')"
       class="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"

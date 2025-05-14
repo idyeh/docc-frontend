@@ -2,7 +2,7 @@
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
       <div>
-        <h1 class="text-2xl font-bold">{{ form.name }}</h1>
+        <h2 class="text-2xl font-bold">{{ form.name }}</h2>
         <p class="text-gray-600">{{ form.description }}</p>
       </div>
       <div v-if="isAdmin" class="space-x-2">
