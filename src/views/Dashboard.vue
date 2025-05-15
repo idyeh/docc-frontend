@@ -42,6 +42,7 @@
       <WorkflowManagement v-if="isAdmin && section === 'workflows'" />
       <FormManagement     v-if="isAdmin && section === 'forms'" />
       <UserManagement     v-if="isAdmin && section === 'users'" />
+      <RoleManagement     v-if="isAdmin" />
 
       <!-- Non-admin views -->
       <WorkflowDashboard  v-if="!isAdmin && section === 'tasks'" />
@@ -55,13 +56,20 @@
 import { auth } from "../store/auth";
 import jwtDecode from "../utils/jwtDecode";
 import FormManagement from "./FormManagement.vue";
+import RoleManagement from "./RoleManagement.vue";
 import UserManagement from "./UserManagement.vue";
 import WorkflowManagement from "./WorkflowManagement.vue";
 import WorkflowDashboard from "./WorkflowDashboard.vue";
 
 export default {
   name: "Dashboard",
-  components: { FormManagement, UserManagement, WorkflowManagement, WorkflowDashboard },
+  components: {
+    FormManagement,
+    UserManagement,
+    RoleManagement,
+    WorkflowManagement,
+    WorkflowDashboard
+  },
   
   async created() {
     this.section = this.isAdmin ? "workflows" : "tasks";

@@ -6,6 +6,8 @@ import DynamicForm from '../views/DynamicForm.vue'
 import Dashboard from '../views/Dashboard.vue'
 import CreateForm from '../views/CreateForm.vue'
 import FormManagement from '../views/FormManagement.vue'
+import CreateRole from '../views/CreateRole.vue'
+import RoleManagement from '../views/RoleManagement.vue'
 import CreateUser from '../views/CreateUser.vue'
 import UserManagement from '../views/UserManagement.vue'
 import User from '../views/User.vue'
@@ -22,6 +24,8 @@ const routes = [
   { path: '/forms/manage', component: FormManagement, meta: { requiresAuth: true } },
   { path: '/forms/create', component: CreateForm, meta: { requiresAuth: true } },
   { path: '/forms/:id', component: DynamicForm, props: route => ({ formId: Number(route.params.id) }), meta: { requiresAuth: true } },
+  { path: '/roles/create', component: CreateRole, meta: { requiresAuth: true } },
+  { path: '/roles/manage', component: RoleManagement, meta: { requiresAuth: true } },
   { path: '/users/manage', component: UserManagement, meta: { requiresAuth: true } },
   { path: '/users/create', component: CreateUser, meta: { requiresAuth: true } },
   { path: '/users/:id', component: User, meta: { requiresAuth: true } },
