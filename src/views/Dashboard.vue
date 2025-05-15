@@ -22,18 +22,28 @@
         @click="section = isAdmin ? 'workflows' : 'tasks'"
         :class="tabClass(isAdmin ? 'workflows' : 'tasks')"
       >
-        {{ isAdmin ? 'Workflows' : 'Tasks' }}
+        {{ isAdmin ? 'Workflow Definitions' : 'Tasks' }}
       </button>
       <button
-        v-if="isAdmin"
         @click="section = 'forms'"
         :class="tabClass('forms')"
-      >Forms</button>
+      >
+        {{ isAdmin ? 'Form Definitions' : 'Forms' }}
+      </button>
       <button
         v-if="isAdmin"
         @click="section = 'users'"
         :class="tabClass('users')"
       >Users</button>
+      <button
+        v-if="isAdmin"
+        @click="section = 'roles'"
+        :class="tabClass('roles')"
+      >Roles</button>
+      <button
+        @click="section = 'files'"
+        :class="tabClass('files')"
+      >Files</button>
     </nav>
 
     <!-- Content -->
@@ -42,7 +52,7 @@
       <WorkflowManagement v-if="isAdmin && section === 'workflows'" />
       <FormManagement     v-if="isAdmin && section === 'forms'" />
       <UserManagement     v-if="isAdmin && section === 'users'" />
-      <RoleManagement     v-if="isAdmin" />
+      <RoleManagement     v-if="isAdmin && section === 'roles'" />
 
       <!-- Non-admin views -->
       <WorkflowDashboard  v-if="!isAdmin && section === 'tasks'" />
