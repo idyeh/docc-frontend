@@ -1,51 +1,76 @@
 <template>
   <div class="p-6">
+    <!-- Header -->
     <div class="flex justify-between items-center mb-6">
       <div>
         <h1 class="text-2xl font-bold">Dashboard</h1>
-        <p class="mt-2">Welcome, {{ currentUser }} ({{ currentUserRole }})!</p>
+        <p class="mt-2">
+          Welcome, {{ currentUser }} ({{ currentUserRole }})
+        </p>
       </div>
-      <button 
-        @click="logout" 
+      <button
+        @click="logout"
         class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
       >
         Logout
       </button>
     </div>
 
-    <UserManagement v-if="isAdmin" />
-    
-    <FormManagement />
+    <!-- Menu -->
+    <nav class="flex space-x-4 border-b pb-2">
+      <button
+        @click="section = isAdmin ? 'workflows' : 'tasks'"
+        :class="tabClass(isAdmin ? 'workflows' : 'tasks')"
+      >
+        {{ isAdmin ? 'Workflows' : 'Tasks' }}
+      </button>
+      <button
+        v-if="isAdmin"
+        @click="section = 'forms'"
+        :class="tabClass('forms')"
+      >Forms</button>
+      <button
+        v-if="isAdmin"
+        @click="section = 'users'"
+        :class="tabClass('users')"
+      >Users</button>
+    </nav>
+
+    <!-- Content -->
+    <div class="mt-6">
+      <!-- Admin views -->
+      <WorkflowManagement v-if="isAdmin && section === 'workflows'" />
+      <FormManagement     v-if="isAdmin && section === 'forms'" />
+      <UserManagement     v-if="isAdmin && section === 'users'" />
+
+      <!-- Non-admin views -->
+      <WorkflowDashboard  v-if="!isAdmin && section === 'tasks'" />
+      <FormManagement     v-if="!isAdmin && section === 'forms'" />
+      <UserManagement     v-if="!isAdmin && section === 'users'" />
+    </div>
   </div>
 </template>
   
 <script>
-import axios from "axios";
 import { auth } from "../store/auth";
+import jwtDecode from "../utils/jwtDecode";
 import FormManagement from "./FormManagement.vue";
 import UserManagement from "./UserManagement.vue";
-import jwtDecode from '../utils/jwtDecode'
+import WorkflowManagement from "./WorkflowManagement.vue";
+import WorkflowDashboard from "./WorkflowDashboard.vue";
 
 export default {
   name: "Dashboard",
-  components: { FormManagement, UserManagement },
+  components: { FormManagement, UserManagement, WorkflowManagement, WorkflowDashboard },
+  
+  async created() {
+    this.section = this.isAdmin ? "workflows" : "tasks";
+    console.log("✅ Dashboard component mounted");
+  },
   data() {
     return {
-      forms: [],
-      users: [],
-      page: 1,
-      perPage: 10,
-      totalPages: 1,
-      showDeleteModal: false,
-      formToDelete: null,
+      section: ""
     };
-  },
-  async created() {
-    console.log("✅ Dashboard component mounted");
-    this.fetchForms(1);
-    if (this.isAdmin) {
-      await this.fetchUsers();
-    }
   },
   computed: {
     currentUser() {
@@ -66,56 +91,26 @@ export default {
     },
     isAdmin() {
       try {
-        const payload = jwtDecode(auth.accessToken);
-        return payload.roles?.includes("Administrator") || 
-               payload.roles?.includes("Super Administrator");
+        const roles = jwtDecode(auth.accessToken).roles || [];
+        return (
+          roles.includes("Administrator") ||
+          roles.includes("Super Administrator")
+        );
       } catch {
         return false;
       }
     }
   },
   methods: {
-    async fetchForms(page) {
-      this.page = page;
-      const res = await axios.get(
-        `/api/forms?page=${this.page}&per_page=${this.perPage}`
-      );
-      this.forms = res.data.forms;
-      this.totalPages = res.data.total_pages;
-      console.log("forms:", this.forms);
-    },
-    async fetchUsers() {
-      try {
-        const res = await axios.get('/api/users/');
-        this.users = res.data.users;
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    },
     logout() {
       auth.logout();
       this.$router.push('/login');
     },
-    viewForm(id) {
-      this.$router.push(`/forms/${id}`);
-    },
-    deleteForm(id) {
-      this.formToDelete = id;
-      this.showDeleteModal = true;
-    },
-    async reallyDeleteForm() {
-      this.showDeleteModal = false;
-      try {
-        await axios.delete(`/api/forms/${this.formToDelete}`);
-        await this.fetchForms(this.page);
-        this.formToDelete = null;
-      } catch (error) {
-        if (error.response?.status === 400) {
-          alert('Cannot delete: Form has existing entries');
-        } else {
-          alert('Error deleting form: ' + (error.response?.data?.msg || error.message));
-        }
-      }
+    tabClass(tab) {
+      const base = "px-3 py-1 rounded";
+      const active = "bg-blue-600 text-white";
+      const inactive = "text-gray-600 hover:text-blue-600";
+      return tab === this.section ? `${base} ${active}` : `${base} ${inactive}`;
     }
   }
 };

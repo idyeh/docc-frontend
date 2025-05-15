@@ -200,6 +200,7 @@ export default {
             : `/api/forms/${this.formId}/entries/mine`
         );
         this.entries = resp.data;
+        this.$emit('submitted');
       } catch (err) {
         console.error("Submission error:", err);
       }

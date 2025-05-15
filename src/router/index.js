@@ -9,6 +9,10 @@ import FormManagement from '../views/FormManagement.vue'
 import CreateUser from '../views/CreateUser.vue'
 import UserManagement from '../views/UserManagement.vue'
 import User from '../views/User.vue'
+import WorkflowManagement from '../views/WorkflowManagement.vue'
+import CreateWorkflow from '../views/CreateWorkflow.vue'
+import WorkflowDashboard from '../views/WorkflowDashboard.vue'
+import WorkflowInstance from '../views/WorkflowInstance.vue'
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -20,7 +24,13 @@ const routes = [
   { path: '/forms/:id', component: DynamicForm, props: route => ({ formId: Number(route.params.id) }), meta: { requiresAuth: true } },
   { path: '/users/manage', component: UserManagement, meta: { requiresAuth: true } },
   { path: '/users/create', component: CreateUser, meta: { requiresAuth: true } },
-  { path: '/users/:id', component: User, meta: { requiresAuth: true } }
+  { path: '/users/:id', component: User, meta: { requiresAuth: true } },
+  { path: '/workflows/manage', component: WorkflowManagement, meta: { requiresAuth: true } },
+  { path: '/workflows/create', component: CreateWorkflow, meta: { requiresAuth: true } },
+  { path: '/workflows/:id/instances', component: WorkflowInstance, props: route => ({ workflowId: Number(route.params.id) }), meta: { requiresAuth: true } },
+  { path: '/workflows/tasks', component: WorkflowDashboard, meta: { requiresAuth: true } },
+  { path: '/workflows/instances/:instanceId', name: 'WorkflowInstance', component: WorkflowInstance, props: route => ({ instanceId: Number(route.params.instanceId) }), meta: { requiresAuth: true }
+  },
 ]
 
 const router = createRouter({
