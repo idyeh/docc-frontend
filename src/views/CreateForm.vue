@@ -131,7 +131,6 @@ export default {
     },
     async saveForm() {
       try {
-        console.log('Token before request:', auth.accessToken);
         // strip out optionsText
         const payload = {
           name: this.form.name,
@@ -152,8 +151,6 @@ export default {
             'Content-Type': 'application/json'
           }
         };
-
-        console.log('Headers:', config.headers);
     
         const url = this.isEdit 
           ? `/api/forms/${this.$route.query.id}`
@@ -165,8 +162,6 @@ export default {
           data: payload,
           ...config
         });
-
-        console.log('Response:', response);
         this.$router.push('/forms/manage');
       } catch (error) {
         console.error('Error saving form:', error.response?.data || error.message);

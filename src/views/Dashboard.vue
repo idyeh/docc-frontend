@@ -73,7 +73,6 @@ export default {
   
   async created() {
     this.section = this.isAdmin ? "workflows" : "tasks";
-    console.log("✅ Dashboard component mounted");
   },
   data() {
     return {

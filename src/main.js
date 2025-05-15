@@ -6,7 +6,6 @@ import { auth } from './store/auth'
 import './style.css'
 
 axios.interceptors.request.use((config) => {
-  console.log('Token:', auth.accessToken);
   if (auth.accessToken) {
     config.headers = config.headers || {}
     config.headers.Authorization = `Bearer ${auth.accessToken}`
